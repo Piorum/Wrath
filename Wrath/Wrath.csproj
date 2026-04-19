@@ -5,6 +5,15 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PublishAot>true</PublishAot>
+    <OptimizationPreference>Speed</OptimizationPreference>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Moonfire/Moonfire.Tui/Moonfire.Tui.csproj"/>
+    <ProjectReference Include="../Wrath.Views/Wrath.Views.csproj"/>
+  </ItemGroup>
 
 </Project>

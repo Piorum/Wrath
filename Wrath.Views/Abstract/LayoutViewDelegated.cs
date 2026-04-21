@@ -24,10 +24,16 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
     public int SizeX { set; get; }
     public int SizeY { set; get; }
 
-    public int MinX => SubViews.Max(sv => sv.MinX);
-    public int MinY => SubViews.Max(sv => sv.MinY);
-    
-    public ImmutableList<IRelativeMoonfireView> SubViews = [];
+    public int MinX => _subViews.Max(sv => sv.MinX);
+    public int MinY => _subViews.Max(sv => sv.MinY);
+
+    private volatile ImmutableList<IRelativeMoonfireView> _subViews = [];
+    required public ImmutableList<IRelativeMoonfireView> SubViews
+    {
+        set => _subViews = value;
+        private get => _subViews;
+    }
+
     private LayoutToken? cachedLayout;
     private List<LayoutToken> layouts = [];    
     
@@ -39,23 +45,26 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
 
     public async Task<bool> Arrange()
     {
+        var subViews = SubViews;
+        
         if (Dirty)
         {
-            PopulateXYZLevels();
-            await OnArrange();
-            CheckLayout();
+
+            PopulateXYZLevels(subViews);
+            await OnArrange(subViews);
+            CheckLayout(subViews);
 
             Dirty = false;
         }
 
-        return (await Task.WhenAll(SubViews.Select(v => v.Arrange()))).Any(r => r);
+        return (await Task.WhenAll(subViews.Select(v => v.Arrange()))).Any(r => r);
     }
 
-    protected abstract Task OnArrange();
+    protected abstract Task OnArrange(ImmutableList<IRelativeMoonfireView> subViews);
 
-    private void CheckLayout()
+    private void CheckLayout(ImmutableList<IRelativeMoonfireView> subViews)
     {
-        LayoutToken newLayout = new(SubViews);
+        LayoutToken newLayout = new(subViews);
 
         if(cachedLayout is not null && cachedLayout == newLayout)
             return;
@@ -65,7 +74,7 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
         List<LayoutToken> newLayouts = [];
         foreach(var zLevel in ZLevels!)
         {
-            var views = SubViews.Where(v => v.Z == zLevel);
+            var views = subViews.Where(v => v.Z == zLevel);
             LayoutToken layout = new(views);
 
             if(views.MaxBy(v => v.X)?.X >= views.MaxBy(v => v.Y)?.Y)
@@ -79,13 +88,13 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
         layouts = newLayouts;
     }    
     
-    private void PopulateXYZLevels()
+    private void PopulateXYZLevels(ImmutableList<IRelativeMoonfireView> subViews)
     {
         HashSet<int> xSet = [];
         HashSet<int> ySet = [];
         HashSet<int> zSet = [];
 
-        foreach (var view in SubViews)
+        foreach (var view in subViews)
         {
             xSet.Add(view.X);
             ySet.Add(view.Y);

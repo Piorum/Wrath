@@ -24,10 +24,16 @@ public abstract class LayoutViewImposed : IRelativeMoonfireView
     public int SizeX { set; get; }
     public int SizeY { set; get; }
 
-    public int MinX => SubViews.Max(sv => sv.MinX);
-    public int MinY => SubViews.Max(sv => sv.MinY);
-    
-    public ImmutableList<IRelativeMoonfireView> SubViews = [];
+    public int MinX { set; get; }
+    public int MinY { set; get; }
+
+    private volatile ImmutableList<IMoonfireView> _subViews = [];
+    required public ImmutableList<IMoonfireView> SubViews
+    {
+        set => _subViews = value;
+        private get => _subViews;
+    }
+
     private LayoutToken? cachedLayout;
     private List<LayoutToken> layouts = [];    
 

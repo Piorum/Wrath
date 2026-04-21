@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Moonfire.Rendering.Enums;
 using Moonfire.Rendering.Interfaces;
 using Wrath.Views.Abstract;
@@ -6,11 +7,11 @@ namespace Wrath.Views;
 
 public class Pane : LayoutViewDelegated
 {
-    protected override async Task OnArrange()
+    protected override async Task OnArrange(ImmutableList<IRelativeMoonfireView> subViews)
     {
-        var orderedByWidthStyle = SubViews.OrderBy(sv => sv.FillStyleX).ToList();
-        var orderedByHeightStyle = SubViews.OrderBy(sv => sv.FillStyleY).ToList();
-        ILookup<(int x, int y, int z), IRelativeMoonfireView> subViewGrid = SubViews.ToLookup(sv => (sv.X, sv.Y, sv.Z));
+        var orderedByWidthStyle = subViews.OrderBy(sv => sv.FillStyleX).ToList();
+        var orderedByHeightStyle = subViews.OrderBy(sv => sv.FillStyleY).ToList();
+        ILookup<(int x, int y, int z), IRelativeMoonfireView> subViewGrid = subViews.ToLookup(sv => (sv.X, sv.Y, sv.Z));
 
         List<Task> measureAndPostionTasks = [];
         foreach (var zLevel in ZLevels!)

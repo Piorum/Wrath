@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Moonfire/Moonfire.Input/Moonfire.Input.csproj" />
+    <ProjectReference Include="../../Moonfire/Moonfire.Rendering/Moonfire.Rendering.csproj" />
+  </ItemGroup>
+
+</Project>

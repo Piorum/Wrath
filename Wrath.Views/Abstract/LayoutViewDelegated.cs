@@ -4,9 +4,9 @@ using Moonfire.Rendering.Enums;
 using Moonfire.Rendering.Interfaces;
 using Moonfire.Rendering.Models;
 
-namespace Wrath.Views;
+namespace Wrath.Views.Abstract;
 
-public abstract class DelegatedLayoutView : IRelativeMoonfireView
+public abstract class LayoutViewDelegated : IRelativeMoonfireView
 {
     public int X { get; set; }
     public int Y { get; set; }
@@ -27,7 +27,7 @@ public abstract class DelegatedLayoutView : IRelativeMoonfireView
     public int MinX => SubViews.Max(sv => sv.MinX);
     public int MinY => SubViews.Max(sv => sv.MinY);
     
-    required public ImmutableList<IRelativeMoonfireView> SubViews = [];
+    public ImmutableList<IRelativeMoonfireView> SubViews = [];
     private LayoutToken? cachedLayout;
     private List<LayoutToken> layouts = [];    
     

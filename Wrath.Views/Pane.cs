@@ -1,9 +1,10 @@
 using Moonfire.Rendering.Enums;
 using Moonfire.Rendering.Interfaces;
+using Wrath.Views.Abstract;
 
 namespace Wrath.Views;
 
-public class Pane : DelegatedLayoutView
+public class Pane : LayoutViewDelegated
 {
     protected override async Task OnArrange()
     {

@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Moonfire/Moonfire.Rendering/Moonfire.Rendering.csproj"/>
+    <ProjectReference Include="../../Moonfire/Moonfire.Input/Moonfire.Input.csproj" />
+    <ProjectReference Include="../../Moonfire/Moonfire.Rendering/Moonfire.Rendering.csproj" />
+    <ProjectReference Include="../Wrath.Utils/Wrath.Utils.csproj" />
   </ItemGroup>
 
 </Project>

@@ -24,8 +24,8 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
     public int SizeX { set; get; }
     public int SizeY { set; get; }
 
-    public int MinX => _subViews.Max(sv => sv.MinX);
-    public int MinY => _subViews.Max(sv => sv.MinY);
+    public int MinX { get;} = 0;
+    public int MinY { get;} = 0;
 
     private volatile ImmutableList<IRelativeMoonfireView> _subViews = [];
     required public ImmutableList<IRelativeMoonfireView> SubViews
@@ -75,6 +75,17 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
         foreach(var zLevel in ZLevels!)
         {
             var views = subViews.Where(v => v.Z == zLevel);
+
+            int[] minX = new int[XLevels!.Count];
+            int[] minY = new int[YLevels!.Count];
+            foreach(var view in views)
+            {
+                minX[view.X] = Math.Max(view.MinX, minX[view.X]);
+                minY[view.Y] = Math.Max(view.MinY, minY[view.Y]);
+            }
+            if(minX.Sum() > SizeX || minY.Sum() > SizeY)
+                continue;
+
             LayoutToken layout = new(views);
 
             if(views.MaxBy(v => v.X)?.X >= views.MaxBy(v => v.Y)?.Y)

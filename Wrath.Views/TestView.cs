@@ -13,15 +13,15 @@ public class TestView : IRelativeMoonfireView
     public int Y { get; set; }
     public int Z { get; set; }
 
-    public FillStyle FillStyleX  { set; get; } = FillStyle.Max;
-    public FillStyle FillStyleY  { set; get; } = FillStyle.Max;
+    public FillStyle FillStyleX { set; get; } = FillStyle.Max;
+    public FillStyle FillStyleY { set; get; } = FillStyle.Max;
     public int StaticX  { set; get; } = 1; //1 = 1 Cell
     public int StaticY  { set; get; } = 1; //1 = 1 Cell
     public float PercentX  { set; get; } = 1.0f; //1.0f == 100%
     public float PercentY  { set; get; } = 1.0f; //1.0f == 100%
 
-    public int MinX { get; } = 0;
-    public int MinY { get; } = 0;
+    public int MinX => FillStyleX == FillStyle.Static ? StaticX : 0;
+    public int MinY => FillStyleY == FillStyle.Static ? StaticY : 0;
 
     public int OriginX { set; get; }
     public int OriginY { set; get; }

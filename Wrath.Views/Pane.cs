@@ -42,14 +42,14 @@ public class Pane : LayoutViewDelegated
                 switch (view.FillStyleX)
                 {
                     case FillStyle.Static:
-                        view.SizeX = Math.Min(availableWidth[view.Y], view.StaticX);
+                        view.SizeX = view.StaticX;
                         break;
                     case FillStyle.Min:
                         var minX = view.MinX;
                         view.SizeX = availableWidth[view.Y] > minX - 1 ? minX : 0;
                         break;
                     case FillStyle.Percent:
-                        view.SizeX = (int)(availableWidth[view.Y] * view.PercentX);
+                        view.SizeX = Math.Max(view.MinY, (int)(availableWidth[view.Y] * view.PercentX));
                         break;
                     case FillStyle.Max:
                         view.SizeX = availableWidth[view.Y];
@@ -78,14 +78,14 @@ public class Pane : LayoutViewDelegated
                 switch (view.FillStyleY)
                 {
                     case FillStyle.Static:
-                        view.SizeY = Math.Min(availableHeight[view.X], view.StaticY);
+                        view.SizeY = view.StaticY;
                         break;
                     case FillStyle.Min:
                         var minY = view.MinY;
                         view.SizeY = availableHeight[view.X] > minY - 1 ? minY : 0;
                         break;
                     case FillStyle.Percent:
-                        view.SizeY = (int)(availableHeight[view.X] * view.PercentY);
+                        view.SizeY = Math.Max(view.MinX, (int)(availableHeight[view.X] * view.PercentY));
                         break;
                     case FillStyle.Max:
                         view.SizeY = availableHeight[view.X];

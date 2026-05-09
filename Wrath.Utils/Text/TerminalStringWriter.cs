@@ -9,13 +9,13 @@ public static class TerminalStringWriter
     {
         options ??= new();
 
-
+        //Virtualized draw, draw based on options and provided text
     }
 
     public static void Write(TerminalContext context, TerminalString text, TerminalStringOptions? options = null)
     {
         options ??= new();
 
-
+        //Virtualized draw, draw based on options and provided text
     }
 }

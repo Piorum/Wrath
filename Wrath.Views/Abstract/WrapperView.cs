@@ -45,6 +45,9 @@ public abstract class WrapperView : IRelativeMoonfireView
 
     public async Task Draw(TerminalContext context)
     {
+        if(context.W < MinX || context.H < MinY)
+            return;
+            
         await OnDraw(context);
 
         var shiftedContext = ResizeContext(context);

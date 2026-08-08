@@ -49,12 +49,9 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
         
         if (Dirty)
         {
-
             PopulateXYZLevels(subViews);
             await OnArrange(subViews);
             CheckLayout(subViews);
-
-            Dirty = false;
         }
 
         return (await Task.WhenAll(subViews.Select(v => v.Arrange()))).Any(r => r);
@@ -119,8 +116,13 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
 
     public async Task Draw(TerminalContext context)
     {
-        foreach(ref var cell in context)
-            cell = TerminalCell.Blank;
+        if(Dirty)
+        {
+            foreach(ref var cell in context)
+                cell = TerminalCell.Blank;
+            
+            Dirty = false;
+        }
             
         foreach(var layout in layouts)
             await layout.Draw(context);

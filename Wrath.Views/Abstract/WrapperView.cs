@@ -34,8 +34,6 @@ public abstract class WrapperView : IRelativeMoonfireView
         if (Dirty)
         {
             await OnArrange();
-
-            Dirty = false;
         }
 
         return await SubView.Arrange();
@@ -47,8 +45,13 @@ public abstract class WrapperView : IRelativeMoonfireView
     {
         if(context.W < MinX || context.H < MinY)
             return;
-            
-        await OnDraw(context);
+        
+        if (Dirty)
+        {
+            await OnDraw(context);
+
+            Dirty = false;
+        }
 
         var shiftedContext = ResizeContext(context);
         await SubView.Draw(shiftedContext);

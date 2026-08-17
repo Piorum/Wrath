@@ -25,16 +25,14 @@ public abstract class WrapperView : IRelativeMoonfireView
     public int SizeX { set; get; }
     public int SizeY { set; get; }
 
-    public bool Dirty { set; get; }
+    private bool Dirty { set; get; }
 
     required public IRelativeMoonfireView SubView;
 
     public async Task<bool> Arrange()
     {
         if (Dirty)
-        {
             await OnArrange();
-        }
 
         return await SubView.Arrange();
     }

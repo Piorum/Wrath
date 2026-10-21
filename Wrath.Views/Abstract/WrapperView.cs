@@ -29,39 +29,39 @@ public abstract class WrapperView : IRelativeMoonfireView
 
     required public IRelativeMoonfireView SubView;
 
-    public async Task<bool> Arrange()
+    public bool Arrange()
     {
         if (Dirty)
-            await OnArrange();
+            OnArrange();
 
-        return await SubView.Arrange();
+        return SubView.Arrange();
     }
 
-    protected abstract Task OnArrange();
+    protected abstract void OnArrange();
 
-    public async Task Draw(TerminalContext context)
+    public void Draw(TerminalContext context)
     {
         if(context.W < MinX || context.H < MinY)
             return;
         
         if (Dirty)
         {
-            await OnDraw(context);
+            OnDraw(context);
 
             Dirty = false;
         }
 
         var shiftedContext = ResizeContext(context);
-        await SubView.Draw(shiftedContext);
+        SubView.Draw(shiftedContext);
     }
 
-    protected abstract Task OnDraw(TerminalContext context);
+    protected abstract void OnDraw(TerminalContext context);
 
     protected virtual TerminalContext ResizeContext(TerminalContext context) => context;
 
-    public async Task Invalidate()
+    public void Invalidate()
     {
         Dirty = true;
-        await SubView.Invalidate();
+        SubView.Invalidate();
     }
 }

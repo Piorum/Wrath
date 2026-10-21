@@ -26,16 +26,16 @@ public class Border : WrapperView
     //private static readonly (int id, byte width) TitleLeft = GlyphFactory.GetGlyphIds("╴").First();
     //private static readonly (int id, byte width) TitleRight = GlyphFactory.GetGlyphIds("╶").First();
 
-    protected override Task OnArrange()
+    protected override void OnArrange()
     {
         if(SizeX < 1 || SizeY < 1)
-            return Task.CompletedTask;
+            return;
 
         if(SizeX != borderBuffer.W || SizeY != borderBuffer.H)
             borderBuffer = new(new(SizeX, SizeY));
 
         if(borderBuffer.H < 2 || borderBuffer.W < 2)
-            return Task.CompletedTask;
+            return;
         
         var templateStyleId = AnsiStyleFactory.GetStyleId((BorderColor, BackgroundColor, AnsiProperty.None));
         TerminalCell blankCell = new(
@@ -63,16 +63,12 @@ public class Border : WrapperView
         SubView.SizeX = SizeX - 2;
         SubView.SizeY = SizeY - 2;
         SubView.OriginX = OriginX + 1;
-        SubView.OriginY = OriginY + 1;
-
-        return Task.CompletedTask;        
+        SubView.OriginY = OriginY + 1;       
     }
 
-    protected override Task OnDraw(TerminalContext context)
+    protected override void OnDraw(TerminalContext context)
     {
         borderBuffer.CopyTo(context);
-
-        return Task.CompletedTask;
     }
 
     protected override TerminalContext ResizeContext(TerminalContext context) =>

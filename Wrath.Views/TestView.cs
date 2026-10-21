@@ -31,9 +31,9 @@ public class TestView : IRelativeMoonfireView
     public bool Dirty { set; get; }
 
 
-    public Task<bool> Arrange()
+    public bool Arrange()
     {
-        return Task.FromResult(true);
+        return true;
     }
 
     private static readonly int[] colors = new int[65536];
@@ -52,19 +52,16 @@ public class TestView : IRelativeMoonfireView
 
     private int flip = 0;
     private int iterator = 0;
-    public Task Draw(TerminalContext context)
+    public void Draw(TerminalContext context)
     {
         foreach(ref var cell in context)
             cell = new(charId[flip++ & 1], 1, colors[iterator++ & 0xFFFF]);
 
         flip++;
-
-        return Task.CompletedTask;
     }
 
-    public Task Invalidate()
+    public void Invalidate()
     {
         Dirty = true;
-        return Task.CompletedTask;
     }
 }

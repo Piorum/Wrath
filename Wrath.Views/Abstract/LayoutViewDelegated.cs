@@ -43,21 +43,29 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
 
     private bool Dirty { set; get; }
 
-    public async Task<bool> Arrange()
+    public bool Arrange()
     {
         var subViews = SubViews;
+
+        bool changed = Dirty;
         
         if (Dirty)
         {
             PopulateXYZLevels(subViews);
-            await OnArrange(subViews);
+            OnArrange(subViews);
             CheckLayout(subViews);
         }
 
-        return (await Task.WhenAll(subViews.Select(v => v.Arrange()))).Any(r => r);
+        foreach(var view in subViews)
+        {
+            if(view.Arrange())
+                changed = true;
+        }
+
+        return changed;
     }
 
-    protected abstract Task OnArrange(ImmutableList<IRelativeMoonfireView> subViews);
+    protected abstract void OnArrange(ImmutableList<IRelativeMoonfireView> subViews);
 
     private void CheckLayout(ImmutableList<IRelativeMoonfireView> subViews)
     {
@@ -71,7 +79,7 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
         List<LayoutToken> newLayouts = [];
         foreach(var zLevel in ZLevels!)
         {
-            var views = subViews.Where(v => v.Z == zLevel);
+            var views = subViews.Where(v => v.Z == zLevel && v.SizeX > 0 && v.SizeY > 0);
 
             int[] minX = new int[XLevels!.Count];
             int[] minY = new int[YLevels!.Count];
@@ -114,7 +122,7 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
         ZLevels = [.. zSet.Order()];
     }
 
-    public async Task Draw(TerminalContext context)
+    public void Draw(TerminalContext context)
     {
         if(Dirty)
         {
@@ -123,14 +131,16 @@ public abstract class LayoutViewDelegated : IRelativeMoonfireView
             
             Dirty = false;
         }
-            
+        
         foreach(var layout in layouts)
-            await layout.Draw(context);
+            layout.Draw(context);
     }
 
-    public async Task Invalidate()
+    public void Invalidate()
     {
         Dirty = true;
-        await Task.WhenAll(SubViews.Select(v => v.Invalidate()));
+        
+        foreach(var view in SubViews)
+            view.Invalidate();
     }
 }

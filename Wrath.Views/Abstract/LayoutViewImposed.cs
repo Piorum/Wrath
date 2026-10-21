@@ -37,17 +37,17 @@ public abstract class LayoutViewImposed : IRelativeMoonfireView
     private LayoutToken? cachedLayout;
     private List<LayoutToken> layouts = [];    
 
-    public Task<bool> Arrange()
+    public bool Arrange()
     {
         throw new NotImplementedException();
     }
 
-    public Task Draw(TerminalContext context)
+    public void Draw(TerminalContext context)
     {
         throw new NotImplementedException();
     }
 
-    public Task Invalidate()
+    public void Invalidate()
     {
         throw new NotImplementedException();
     }

@@ -1,4 +1,11 @@
 <Solution>
+  <Project Path="../Moonfire/Moonfire.Ansi/Moonfire.Ansi.csproj" />
+  <Project Path="../Moonfire/Moonfire.Glyph/Moonfire.Glyph.csproj" />
+  <Project Path="../Moonfire/Moonfire.Input/Moonfire.Input.csproj" />
+  <Project Path="../Moonfire/Moonfire.Logging/Moonfire.Logging.csproj" />
+  <Project Path="../Moonfire/Moonfire.Rendering/Moonfire.Rendering.csproj" />
+  <Project Path="../Moonfire/Moonfire.Shared/Moonfire.Shared.csproj" />
+  <Project Path="../Moonfire/Moonfire.Tui/Moonfire.Tui.csproj" />
   <Project Path="Wrath.Utils/Wrath.Utils.csproj" />
   <Project Path="Wrath.Views/Wrath.Views.csproj" />
   <Project Path="Wrath/Wrath.csproj" />

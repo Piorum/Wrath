@@ -4,7 +4,7 @@ using Moonfire.Rendering.Enums;
 using Moonfire.Tui;
 using Wrath.Views;
 
-await TuiApp.InitLogging([LogLevel.Debug, LogLevel.Info, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal]);
+TuiApp.InitLogging([LogLevel.Debug, LogLevel.Info, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal]);
 
 Pane rootView = new() { 
     SubViews = [
@@ -21,12 +21,12 @@ TuiApp app = new(rootView);
 app.InputHandler
     .Bind()
     .WithKey(InputKey.KeyboardBind(ConsoleKey.Q))
-    .WithBind(new(async (_) => await app.Stop()))
+    .WithBind(app.Stop)
     .Register();
 app.InputHandler
     .Bind()
     .WithKey(InputKey.KeyboardBind(ConsoleKey.S))
-    .WithBind(new(async (_) => await app.Renderer.EnqueueAction(rootView.Invalidate)))
+    .WithBind(() => app.Renderer.EnqueueAction(rootView.Invalidate))
     .Register();
 
-await app.Run();
+app.Run();

@@ -30,11 +30,11 @@ public abstract class LeafView : IRelativeMoonfireView
 
     public bool Dirty { set; get; }
 
-    public async Task<bool> Arrange()
+    public bool Arrange()
     {
         if (Dirty)
         {
-            await OnArrange();
+            OnArrange();
 
             Dirty = false;
 
@@ -44,18 +44,17 @@ public abstract class LeafView : IRelativeMoonfireView
         return false;
     }
 
-    protected abstract Task OnArrange();
+    protected abstract void OnArrange();
 
-    public async Task Draw(TerminalContext context)
+    public void Draw(TerminalContext context)
     {
-        await OnDraw(context);
+        OnDraw(context);
     }
 
-    protected abstract Task OnDraw(TerminalContext context);
+    protected abstract void OnDraw(TerminalContext context);
 
-    public Task Invalidate()
+    public void Invalidate()
     {
         Dirty = true;
-        return Task.CompletedTask;
     }
 }
